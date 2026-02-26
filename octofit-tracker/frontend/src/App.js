@@ -1,14 +1,37 @@
 import logo from './logo.svg';
 import './App.css';
+import { useEffect, useState } from 'react';
+import { healthCheck } from './services/api';
 
 function App() {
+  const [backendStatus, setBackendStatus] = useState('checking...');
+  const [backendMessage, setBackendMessage] = useState('');
+
+  useEffect(() => {
+    const checkHealth = async () => {
+      try {
+        const response = await healthCheck();
+        setBackendStatus(response.status);
+        setBackendMessage(response.message);
+      } catch (error) {
+        setBackendStatus('error');
+        setBackendMessage('Failed to connect to backend');
+      }
+    };
+
+    checkHealth();
+  }, []);
+
   return (
     <div className="App">
       <header className="App-header">
         <img src={logo} className="App-logo" alt="logo" />
-        <p>
-          Edit <code>src/App.js</code> and save to reload.
-        </p>
+        <h1>OctoFit Tracker</h1>
+        <div style={{ border: '1px solid white', padding: '20px', borderRadius: '5px' }}>
+          <h2>Backend Status</h2>
+          <p><strong>Status:</strong> {backendStatus}</p>
+          <p><strong>Message:</strong> {backendMessage}</p>
+        </div>
         <a
           className="App-link"
           href="https://reactjs.org"
