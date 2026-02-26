@@ -2,7 +2,8 @@
  * API service for OctoFit Tracker backend
  */
 
-const API_BASE_URL = process.env.REACT_APP_API_URL || 'http://localhost:8000/api';
+// Use relative path so CRA dev server proxy can intercept requests
+const API_BASE_URL = '/api';
 
 export const apiClient = {
   /**
