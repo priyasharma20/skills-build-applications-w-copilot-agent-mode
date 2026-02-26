@@ -6,6 +6,7 @@ import { healthCheck } from './services/api';
 function App() {
   const [backendStatus, setBackendStatus] = useState('checking...');
   const [backendMessage, setBackendMessage] = useState('');
+  const [backendError, setBackendError] = useState(null);
 
   useEffect(() => {
     const checkHealth = async () => {
@@ -16,6 +17,8 @@ function App() {
       } catch (error) {
         setBackendStatus('error');
         setBackendMessage('Failed to connect to backend');
+        setBackendError(error.toString());
+        console.error('healthCheck failed:', error);
       }
     };
 
@@ -31,6 +34,7 @@ function App() {
           <h2>Backend Status</h2>
           <p><strong>Status:</strong> {backendStatus}</p>
           <p><strong>Message:</strong> {backendMessage}</p>
+          {backendError && <p><strong>Error:</strong> {backendError}</p>}
         </div>
         <a
           className="App-link"
